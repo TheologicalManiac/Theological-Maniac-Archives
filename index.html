@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Theological Maniac - Digital Archive</title>
-            <style>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -24,6 +24,35 @@
         @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Desktop/Mobile Toggle Button */
+        .view-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(138, 43, 226, 0.8);
+            color: #ecf0f1;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .view-toggle:hover {
+            background: rgba(231, 76, 60, 0.8);
+            transform: scale(1.05);
         }
 
         .repo-label {
@@ -55,6 +84,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            transition: all 0.3s ease;
         }
 
         header {
@@ -94,7 +124,7 @@
         }
 
         .site-title {
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 6vw, 3.5rem);
             font-weight: bold;
             color: #e74c3c;
             margin-bottom: 10px;
@@ -117,51 +147,24 @@
         }
 
         .subtitle {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 3vw, 1.3rem);
             color: #9b59b6;
             font-style: italic;
             margin-bottom: 20px;
         }
 
         .description {
-            font-size: 1.1rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
             color: #ecf0f1;
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.8;
         }
 
-        .navigation {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-        }
-
-        .nav-item {
-            background: rgba(139, 69, 19, 0.1);
-            padding: 15px 25px;
-            border-radius: 25px;
-            text-decoration: none;
-            color: #8b4513;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            font-size: 1.05rem;
-        }
-
-        .nav-item:hover {
-            background: rgba(139, 69, 19, 0.2);
-            border-color: #8b4513;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
-        }
-
         .content-section {
             background: rgba(15, 15, 35, 0.8);
             margin-bottom: 40px;
-            padding: 40px;
+            padding: clamp(20px, 5vw, 40px);
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
@@ -169,7 +172,7 @@
         }
 
         .section-title {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             color: #e74c3c;
             margin-bottom: 20px;
             border-bottom: 3px solid #9b59b6;
@@ -178,16 +181,16 @@
 
         .archive-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: clamp(15px, 3vw, 30px);
             margin-top: 30px;
         }
 
         .archive-item {
-            background: rgba(244, 240, 230, 0.8);
-            padding: 25px;
+            background: rgba(20, 20, 40, 0.9);
+            padding: clamp(15px, 4vw, 25px);
             border-radius: 10px;
-            border-left: 5px solid #8b4513;
+            border-left: 5px solid #e74c3c;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
@@ -200,15 +203,15 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.2), transparent);
             transition: left 0.5s ease;
         }
 
         .archive-item:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(139, 69, 19, 0.25);
+            box-shadow: 0 15px 35px rgba(138, 43, 226, 0.4);
             border-left-width: 8px;
-            background: rgba(255, 248, 235, 0.9);
+            background: rgba(25, 25, 50, 0.95);
         }
 
         .archive-item:hover::before {
@@ -234,75 +237,57 @@
         }
 
         .archive-item h3 {
-            color: #8b4513;
+            color: #e74c3c;
             margin-bottom: 10px;
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
         }
 
         .archive-item p {
-            color: #5d4e37;
+            color: #bdc3c7;
             line-height: 1.6;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
         }
 
         .disclaimer {
-            background: rgba(255, 248, 220, 0.9);
-            border: 2px solid #d4a574;
+            background: rgba(20, 20, 40, 0.8);
+            border: 2px solid #9b59b6;
             border-radius: 10px;
-            padding: 30px;
+            padding: clamp(20px, 5vw, 30px);
             margin-top: 50px;
         }
 
         .disclaimer h3 {
-            color: #8b4513;
+            color: #e74c3c;
             margin-bottom: 15px;
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 3.5vw, 1.5rem);
         }
 
         .disclaimer p {
             margin-bottom: 15px;
-            color: #5d4e37;
+            color: #bdc3c7;
             line-height: 1.7;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
         }
 
         .footer {
             text-align: center;
             margin-top: 60px;
             padding: 30px;
-            color: #8b4513;
+            color: #9b59b6;
             font-style: italic;
         }
 
         .decorative-divider {
             text-align: center;
             margin: 40px 0;
-            font-size: 1.5rem;
-            color: #d4a574;
-        }
-
-        @media (max-width: 768px) {
-            .site-title {
-                font-size: 2.5rem;
-            }
-            
-            .navigation {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .content-section {
-                padding: 25px;
-            }
-            
-            .archive-grid {
-                grid-template-columns: 1fr;
-            }
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: #9b59b6;
         }
 
         .ornament {
             display: inline-block;
-            font-size: 1.2rem;
-            color: #d4a574;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #9b59b6;
             margin: 0 10px;
             animation: ornamentSpin 8s linear infinite;
         }
@@ -311,9 +296,118 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Mobile-First Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            header {
+                margin-bottom: 40px;
+                padding: 25px 15px;
+            }
+
+            .archive-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .view-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+
+            .repo-link {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+
+            .content-section {
+                margin-bottom: 30px;
+            }
+
+            .footer {
+                margin-top: 40px;
+                padding: 20px;
+            }
+
+            /* Disable floating animations on mobile for better performance */
+            .archive-item:nth-child(odd),
+            .archive-item:nth-child(even) {
+                animation: none;
+            }
+
+            .archive-item:hover {
+                transform: translateY(-4px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 20px 10px;
+            }
+
+            .content-section {
+                padding: 20px 15px;
+            }
+
+            .disclaimer {
+                padding: 20px 15px;
+            }
+
+            .ornament {
+                margin: 0 5px;
+            }
+        }
+
+        /* Large Screen Optimizations */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1400px;
+            }
+
+            .archive-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+
+        /* Force mobile layout class */
+        .mobile-layout .archive-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        .mobile-layout .container {
+            padding: 15px !important;
+        }
+
+        .mobile-layout header {
+            padding: 25px 15px !important;
+        }
+
+        .mobile-layout .content-section {
+            padding: 20px 15px !important;
+        }
+
+        /* Force desktop layout class */
+        .desktop-layout .archive-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+        }
+
+        .desktop-layout .container {
+            padding: 20px !important;
+        }
     </style>
 </head>
 <body>
+    <button class="view-toggle" onclick="toggleLayout()" id="layoutToggle">📱 Mobile View</button>
+    
     <div class="container">
         <header>
             <h1 class="site-title">The Theological Maniac</h1>
@@ -328,15 +422,13 @@
                 This archive gathers writings that explore theology through a balance of research and personal insight, offering a place to engage with ideas that have shaped belief for centuries.
             </p>
             
-            <p style="margin-top: 30px; text-align: center; font-size: 1.1rem; position: relative; z-index: 1;">
+            <p style="margin-top: 30px; text-align: center; font-size: clamp(0.95rem, 2.5vw, 1.1rem); position: relative; z-index: 1;">
                 <strong class="repo-label">Enter the Repository of The Archives:</strong><br>
                 <a href="https://github.com/TheologicalManiac/Theological-Maniac-Archives" class="repo-link">
                    ⚡ GitHub.com/TheologicalManiac/Theological-Maniac-Archives ⚡
                 </a>
             </p>
         </header>
-
-
 
         <section id="writings" class="content-section">
             <h2 class="section-title">Recent Additions</h2>
@@ -398,10 +490,60 @@
             <p style="margin-top: 15px;">Theological Maniac Digital Archive | Preserving Sacred Scholarship for Future Generations</p>
         </footer>
     </div>
+
+    <script>
+        let isMobileLayout = false;
+
+        function toggleLayout() {
+            const body = document.body;
+            const button = document.getElementById('layoutToggle');
+            
+            if (isMobileLayout) {
+                // Switch to desktop layout
+                body.classList.remove('mobile-layout');
+                body.classList.add('desktop-layout');
+                button.textContent = '📱 Mobile View';
+                button.title = 'Switch to Mobile Layout';
+                isMobileLayout = false;
+            } else {
+                // Switch to mobile layout
+                body.classList.remove('desktop-layout');
+                body.classList.add('mobile-layout');
+                button.textContent = '💻 Desktop View';
+                button.title = 'Switch to Desktop Layout';
+                isMobileLayout = true;
+            }
+        }
+
+        // Auto-detect initial layout based on screen size
+        function initializeLayout() {
+            if (window.innerWidth <= 768) {
+                isMobileLayout = true;
+                document.body.classList.add('mobile-layout');
+                document.getElementById('layoutToggle').textContent = '💻 Desktop View';
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeLayout);
+
+        // Optional: Auto-adjust on window resize (can be disabled if manual control is preferred)
+        window.addEventListener('resize', function() {
+            const button = document.getElementById('layoutToggle');
+            if (window.innerWidth <= 768 && !isMobileLayout) {
+                // Auto-switch to mobile on small screens
+                document.body.classList.remove('desktop-layout');
+                document.body.classList.add('mobile-layout');
+                button.textContent = '💻 Desktop View';
+                isMobileLayout = true;
+            } else if (window.innerWidth > 768 && isMobileLayout) {
+                // Auto-switch to desktop on large screens
+                document.body.classList.remove('mobile-layout');
+                document.body.classList.add('desktop-layout');
+                button.textContent = '📱 Mobile View';
+                isMobileLayout = false;
+            }
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
