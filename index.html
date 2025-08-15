@@ -1,26 +1,402 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Archive Home</title>
-  <style>
-    body {background: linear-gradient(120deg, #e6eafc 0%, #f8effc 100%); min-height: 100vh; margin: 0; font-family: 'Segoe UI', Arial, sans-serif; color: #22223b; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;}
-    .container {background: #fff; margin: 2rem 0 0 0; padding: 2rem 2.5rem 2rem 2.5rem; border-radius: 18px; box-shadow: 0 6px 24px 0 rgba(60,40,100,0.09); max-width: 440px; width: 100%; min-width: 270px;}
-    h1 {margin-top: 0; font-size: 2rem; letter-spacing: 1px; text-align: center;}
-    ul {list-style: none; padding: 0; margin: 1.2em 0 0 0;}
-    li {margin: 1.2em 0; font-size: 1.08em; display: flex; align-items: center;}
-    a {color: #6355d8; text-decoration: none; transition: color 0.2s; margin-left: 0.5em; word-break: break-all;}
-    a:hover {color: #2a2348; text-decoration: underline;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theological Maniac - Digital Archive</title>
+            <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            background: linear-gradient(135deg, #0f0f23 0%, #16213e 50%, #1a1a2e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease-in-out infinite;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .repo-label {
+            color: #9b59b6;
+            animation: textPulse 3s ease-in-out infinite;
+        }
+
+        .repo-link {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid #9b59b6;
+            padding: 8px 16px;
+            margin-top: 15px;
+            display: inline-block;
+            border-radius: 25px;
+            background: rgba(138, 43, 226, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .repo-link:hover {
+            background: rgba(231, 76, 60, 0.3);
+            transform: scale(1.05);
+            border-bottom-color: #e74c3c;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(15, 15, 35, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            animation: headerPulse 6s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(138, 43, 226, 0.1), transparent);
+            animation: shimmer 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes headerPulse {
+            0% { transform: scale(1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+            100% { transform: scale(1.02); box-shadow: 0 12px 40px rgba(138, 43, 226, 0.4); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .site-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: -1px;
+            animation: titleGlow 4s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes titleGlow {
+            0% { 
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(231, 76, 60, 0.5);
+                transform: translateY(0px);
+            }
+            100% { 
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7), 0 0 30px rgba(231, 76, 60, 0.8);
+                transform: translateY(-2px);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #9b59b6;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: #ecf0f1;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            background: rgba(139, 69, 19, 0.1);
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #8b4513;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 1.05rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(139, 69, 19, 0.2);
+            border-color: #8b4513;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .content-section {
+            background: rgba(15, 15, 35, 0.8);
+            margin-bottom: 40px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #9b59b6;
+            padding-bottom: 10px;
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .archive-item {
+            background: rgba(244, 240, 230, 0.8);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #8b4513;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .archive-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .archive-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(139, 69, 19, 0.25);
+            border-left-width: 8px;
+            background: rgba(255, 248, 235, 0.9);
+        }
+
+        .archive-item:hover::before {
+            left: 100%;
+        }
+
+        .archive-item:nth-child(odd) {
+            animation: floatLeft 6s ease-in-out infinite;
+        }
+
+        .archive-item:nth-child(even) {
+            animation: floatRight 6s ease-in-out infinite;
+        }
+
+        @keyframes floatLeft {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(-3px) translateY(-2px); }
+        }
+
+        @keyframes floatRight {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(3px) translateY(-2px); }
+        }
+
+        .archive-item h3 {
+            color: #8b4513;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .archive-item p {
+            color: #5d4e37;
+            line-height: 1.6;
+        }
+
+        .disclaimer {
+            background: rgba(255, 248, 220, 0.9);
+            border: 2px solid #d4a574;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        .disclaimer h3 {
+            color: #8b4513;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .disclaimer p {
+            margin-bottom: 15px;
+            color: #5d4e37;
+            line-height: 1.7;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: #8b4513;
+            font-style: italic;
+        }
+
+        .decorative-divider {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 1.5rem;
+            color: #d4a574;
+        }
+
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 2.5rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .archive-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ornament {
+            display: inline-block;
+            font-size: 1.2rem;
+            color: #d4a574;
+            margin: 0 10px;
+            animation: ornamentSpin 8s linear infinite;
+        }
+
+        @keyframes ornamentSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🗂️ Archive Home</h1>
-    <ul>
-      <li>📁 <a href="Religion/index.html">Religion</a></li>
-      <li>📁 <a href="Philosophy/index.html">Philosophy</a></li>
-      <li>📁 <a href="Psychology/index.html">Psychology</a></li>
-    </ul>
-  </div>
+    <div class="container">
+        <header>
+            <h1 class="site-title">Theological Maniac</h1>
+            <p class="subtitle">A Digital Archive of Sacred Scholarship & Contemplation</p>
+            <div class="decorative-divider">
+                <span class="ornament">✠</span>
+                <span class="ornament">✠</span>
+                <span class="ornament">✠</span>
+            </div>
+            <p class="description">
+                Welcome to a realm where ancient wisdom meets modern inquiry, where sacred mysteries unfold through scholarly exploration and personal revelation. 
+                This digital sanctum preserves the echoes of divine conversations across millennia, inviting seekers to discover profound truths hidden within theological depths.
+            </p>
+            
+            <p style="margin-top: 30px; text-align: center; font-size: 1.1rem; position: relative; z-index: 1;">
+                <strong class="repo-label">Enter the Repository of Sacred Knowledge:</strong><br>
+                <a href="https://github.com/TheologicalManiac/Theological-Maniac-Archives" class="repo-link">
+                   ⚡ GitHub.com/TheologicalManiac/Theological-Maniac-Archives ⚡
+                </a>
+            </p>
+        </header>
+
+
+
+        <section id="writings" class="content-section">
+            <h2 class="section-title">Recent Additions</h2>
+            <div class="archive-grid">
+                <div class="archive-item">
+                    <h3>The War of Angels and Demons: A Theological Exploration</h3>
+                    <p>A comprehensive examination of the cosmic struggle between good and evil, tracing the development from biblical hints through patristic thought to modern interpretations. Explores how this ancient theme speaks to questions of free will, the nature of evil, and divine providence.</p>
+                </div>
+                <div class="archive-item">
+                    <h3>Christian and Nihilist: The Confession and the Paradox</h3>
+                    <p>A deeply personal reflection on living with the tension between faith and existential doubt. Examines how Christianity and nihilistic perspectives can coexist, offering honest insights into the struggle between meaning and meaninglessness.</p>
+                </div>
+                <div class="archive-item">
+                    <h3>Facing Existentialism: A Personal Reflection</h3>
+                    <p>An intimate exploration of existentialist philosophy through lived experience, examining themes of freedom, authenticity, and the courage to create meaning in an uncertain world. Draws from Sartre, Kierkegaard, Camus, and Heidegger.</p>
+                </div>
+                <div class="archive-item">
+                    <h3>In the Dark: The Truth About My Loneliness</h3>
+                    <p>A raw and honest examination of isolation and its effects on the human soul. Explores the darkness of solitude without easy consolations, offering a voice for those who struggle with disconnection and the search for authentic relationship.</p>
+                </div>
+                <div class="archive-item">
+                    <h3>Main Followers and Companions of Paul</h3>
+                    <p>A detailed study of the key figures who supported Paul's missionary work, including Barnabas, Silas, Timothy, Titus, Luke, Priscilla, Aquila, and others. Examines their backgrounds, contributions, and the ultimate fate of these early Christian leaders.</p>
+                </div>
+                <div class="archive-item">
+                    <h3>Twelve Original Disciples of Jesus: Detailed View</h3>
+                    <p>A comprehensive overview of the twelve apostles chosen by Jesus, their backgrounds, roles in the early church, and traditional accounts of their deaths. Provides historical context and examines their lasting impact on Christian history.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="collections" class="content-section">
+            <h2 class="section-title">Archive Purpose & Mission</h2>
+            <p style="color: #bdc3c7;">This digital archive exists to preserve, share, and celebrate the rich heritage of theological thought. Whether you're a scholar, student, pastor, or curious seeker, you'll find materials here that challenge, inspire, and illuminate the eternal questions that have captivated believers throughout the ages.</p>
+            
+            <p style="margin-top: 20px; color: #bdc3c7;">My collection includes both original compositions and carefully curated works from other authors, always presented with complete attribution and respect for intellectual property. Every effort is made to honor the legacy and intent of the original authors while making these treasures accessible to a new generation of readers.</p>
+        </section>
+
+        <div class="disclaimer">
+            <h3>Copyright & Attribution Notice</h3>
+            <p><strong>Commitment to Proper Attribution:</strong> This archive is committed to giving full credit to all authors whose works are featured. Every non-original piece includes complete citation information, author attribution, and source acknowledgment.</p>
+            
+            <p><strong>Copyright Compliance:</strong> All materials used fall under fair use provisions for educational, scholarly, and non-commercial purposes, or are in the public domain. Where copyrighted works are referenced, only brief excerpts are used with full attribution to encourage readers to seek out the complete original works.</p>
+            
+            <p><strong>Intellectual Property Respect:</strong> If you are the copyright holder of any material featured here and have concerns about its use, please contact the archive maintainer immediately. We are committed to resolving any issues promptly and respectfully.</p>
+            
+            <p><strong>Original Content:</strong> All original writings in this archive are the intellectual property of the author(s) and are shared for educational and spiritual enrichment. Reproduction requires permission.</p>
+            
+            <p><strong>Educational Purpose:</strong> This archive exists solely for educational, scholarly, and spiritual purposes. No commercial benefit is derived from the materials contained herein.</p>
+        </div>
+
+        <footer class="footer">
+            <div class="decorative-divider">
+                <span class="ornament">✠</span>
+                <span class="ornament">✠</span>
+                <span class="ornament">✠</span>
+            </div>
+            <p>"Study to show yourself approved unto God, a workman that needs not to be ashamed, rightly dividing the word of truth." - 2 Timothy 2:15</p>
+            <p style="margin-top: 15px;">Theological Maniac Digital Archive | Preserving Sacred Scholarship for Future Generations</p>
+        </footer>
+    </div>
 </body>
 </html>
