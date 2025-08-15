@@ -406,7 +406,7 @@
     </style>
 </head>
 <body>
-    <button class="view-toggle" onclick="toggleLayout()" id="layoutToggle">📱 Mobile View</button>
+    <button class="view-toggle" onclick="toggleLayout()" id="layoutToggle">🔄 Auto-Detecting...</button>
     
     <div class="container">
         <header>
@@ -492,57 +492,77 @@
     </div>
 
     <script>
-        let isMobileLayout = false;
+        let userOverride = false; // Track if user manually overrode the layout
+
+        function detectDevice() {
+            // Comprehensive device detection
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                            window.innerWidth <= 768 ||
+                            ('ontouchstart' in window) ||
+                            (navigator.maxTouchPoints > 0);
+            return isMobile;
+        }
+
+        function updateLayout() {
+            if (userOverride) return; // Don't auto-update if user manually set layout
+            
+            const body = document.body;
+            const button = document.getElementById('layoutToggle');
+            const isMobile = detectDevice();
+            
+            // Remove existing layout classes
+            body.classList.remove('mobile-layout', 'desktop-layout');
+            
+            if (isMobile) {
+                body.classList.add('mobile-layout');
+                button.textContent = '💻 Force Desktop';
+                button.title = 'Force Desktop Layout';
+            } else {
+                body.classList.add('desktop-layout');
+                button.textContent = '📱 Force Mobile';
+                button.title = 'Force Mobile Layout';
+            }
+        }
 
         function toggleLayout() {
             const body = document.body;
             const button = document.getElementById('layoutToggle');
             
-            if (isMobileLayout) {
+            userOverride = true; // User is manually overriding
+            
+            if (body.classList.contains('mobile-layout')) {
                 // Switch to desktop layout
                 body.classList.remove('mobile-layout');
                 body.classList.add('desktop-layout');
-                button.textContent = '📱 Mobile View';
-                button.title = 'Switch to Mobile Layout';
-                isMobileLayout = false;
+                button.textContent = '📱 Force Mobile';
+                button.title = 'Force Mobile Layout';
             } else {
                 // Switch to mobile layout
                 body.classList.remove('desktop-layout');
                 body.classList.add('mobile-layout');
-                button.textContent = '💻 Desktop View';
-                button.title = 'Switch to Desktop Layout';
-                isMobileLayout = true;
+                button.textContent = '💻 Force Desktop';
+                button.title = 'Force Desktop Layout';
             }
-        }
-
-        // Auto-detect initial layout based on screen size
-        function initializeLayout() {
-            if (window.innerWidth <= 768) {
-                isMobileLayout = true;
-                document.body.classList.add('mobile-layout');
-                document.getElementById('layoutToggle').textContent = '💻 Desktop View';
-            }
+            
+            // Reset override after 10 seconds of no interaction
+            setTimeout(() => {
+                userOverride = false;
+            }, 10000);
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', initializeLayout);
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLayout();
+        });
 
-        // Optional: Auto-adjust on window resize (can be disabled if manual control is preferred)
+        // Auto-adjust on window resize (only if user hasn't overridden)
         window.addEventListener('resize', function() {
-            const button = document.getElementById('layoutToggle');
-            if (window.innerWidth <= 768 && !isMobileLayout) {
-                // Auto-switch to mobile on small screens
-                document.body.classList.remove('desktop-layout');
-                document.body.classList.add('mobile-layout');
-                button.textContent = '💻 Desktop View';
-                isMobileLayout = true;
-            } else if (window.innerWidth > 768 && isMobileLayout) {
-                // Auto-switch to desktop on large screens
-                document.body.classList.remove('mobile-layout');
-                document.body.classList.add('desktop-layout');
-                button.textContent = '📱 Mobile View';
-                isMobileLayout = false;
-            }
+            updateLayout();
+        });
+
+        // Also check on orientation change for mobile devices
+        window.addEventListener('orientationchange', function() {
+            setTimeout(updateLayout, 100); // Small delay to let orientation change complete
         });
     </script>
 </body>
